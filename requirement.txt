@@ -1,0 +1,5 @@
+requests
+pil-plus
+pypdf
+image-image
+pdfmerger
