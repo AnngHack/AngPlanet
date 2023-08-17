@@ -1,8 +1,17 @@
 import requests
 import os
+import sys
 from PIL import Image
 from pypdf import PdfMerger
 
+print("""
+   Welcome to Slideshare Downloader
+  :::    ::  ::  ::::::  ::::::  ::
+ :::::   ::::::  :::     :::     ::
+::   ::  ::  ::  ::::::  ::::::  :::::: By Mr. Aanngg
+""")
+
+error = 0
 def get_first_line(url):
     try:
         response = requests.get(url)
@@ -12,10 +21,15 @@ def get_first_line(url):
         return first_line
     except requests.exceptions.RequestException as e:
         print(f"Error fetching the website: {e}")
+        error = 1
         return None
 
 
-website_url = input('Enter the slideshare url: ')
+website_url = input('Paste the slideshare url: ')
+pdf_name = 'slideshare'
+name_input = str(input('Enter file name [default is slideshare.pdf]: '))
+if name_input.strip() != "":
+    pdf_name = name_input
 
 first_line_variable = get_first_line(website_url)
 
@@ -30,6 +44,7 @@ if first_line_variable is not None:
 
 else:
     print("Failed to fetch the website.")
+    error = 1
 
 final_list = []
 for item in link_list:
@@ -52,19 +67,31 @@ while i <= end:
         os.remove(f"{i}.jpg")
         print(f"{i} slide downloaded...")
         i += 1
-j = 1
-pdf_list = []
-while j <= end:
-    pdf_list.append(f"{j}.pdf")
-    j += 1
-merger = PdfMerger()
-for pdf in pdf_list:
-    merger.append(pdf)
-merger.write("Output.pdf")
-merger.close()
+        
+if error == 0:
+    j = 1
+    pdf_list = []
+    while j <= end:
+        pdf_list.append(f"{j}.pdf")
+        j += 1
+
+    merger = PdfMerger()
+    for pdf in pdf_list:
+        merger.append(pdf)
+    pdf_name = pdf_name + '.pdf'
+    merger.write(pdf_name)
+    merger.close()
+    print(f"{pdf_name} is Downloaded at slideshare folder.")
+
 k = 1
 pdf_list = []
 while k <= end:
     os.remove(f"{k}.pdf")
     k += 1
-print("Successful")
+
+close_program = input("Press ENTER to exit. ")
+if close_program == "":
+    sys.exit()
+else:
+    sys.exit()
+
