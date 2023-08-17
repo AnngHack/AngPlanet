@@ -3,4 +3,3 @@ pil-plus
 pypdf
 image-image
 pdfmerger
-sys
